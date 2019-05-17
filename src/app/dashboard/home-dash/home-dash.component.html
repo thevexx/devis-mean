@@ -1,0 +1,56 @@
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">
+    <a routerLink="/dashboard">Dashboard</a>
+  </li>
+</ol>
+<h4>Dashboard</h4>
+<hr>
+
+<div class="row">
+  <div class="col-lg-4">
+    <div class="card mb-3">
+      <div class="card-header">
+        <i class="fas fa-file-alt"></i>
+        Devis
+      </div>
+      <div class="card-body mx-auto">
+        <h1>{{dashboardData?.devis}}</h1>
+      </div>
+      <div class="card-footer small text-muted">
+        <button class="btn btn-primary btn-block" routerLink="/dashboard/devis" type="button"> Consulter les devis
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="card mb-3">
+      <div class="card-header">
+        <i class="fas fa-briefcase"></i>
+        Projets</div>
+      <div class="card-body mx-auto">
+        <h1>{{dashboardData?.project}}</h1>
+      </div>
+      <div class="card-footer small  text-muted">
+        <button class="btn btn-primary btn-block" routerLink="/dashboard/projects" type="button"> Consulter les Projets
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="card mb-3">
+      <div class="card-header">
+        <i class="fas fa-address-book"></i>
+        Employés</div>
+      <div class="card-body mx-auto">
+        <h1>{{dashboardData?.employee}}</h1>
+      </div>
+      <div class="card-footer small text-muted">
+        <button class="btn btn-primary btn-block" routerLink="/dashboard/employees" type="button"> Consulter les
+          Employés
+        </button>
+        <!-- <br> -->
+        <!-- <button class="btn btn-primary btn-block" routerLink="/dashboard/devis" type="button"> Ajouter Employé</button> -->
+      </div>
+    </div>
+  </div>
+</div>

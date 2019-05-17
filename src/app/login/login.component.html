@@ -1,0 +1,62 @@
+<div class="bg-demande" alt="">
+</div>
+<nav class="navbar navbar-light bg-light static-top">
+  <div class="container">
+    <a class="navbar-brand" routerLink="/home">Devis</a>
+    <div>
+      <a class="btn btn-primary ml-3" routerLink="/demande">Demande de Devis</a>
+      <a class="btn btn-secondary ml-3" routerLink="/login">Se connecter</a>
+    </div>
+  </div>
+</nav>
+
+
+
+<div class="container">
+  <div class="card card-login mx-auto mt-5">
+    <div class="card-header">Login</div>
+    <div class="card-body">
+      <form [formGroup]="loginForm">
+        <div class="form-group">
+          <div class="form-label-group">
+            <input formControlName="email" type="email" id="inputEmail" class="form-control" placeholder="Email address"
+              required="required" autofocus="autofocus"
+              [ngClass]="{'is-invalid': loginForm.controls['email']?.errors?.required && ( loginForm.controls['email']?.dirty || loginForm.controls['email']?.touched)}">
+            <label for="inputEmail">Email</label>
+            <div class="invalid-feedback"
+              *ngIf="loginForm.controls['email']?.errors?.required && ( loginForm.controls['email']?.dirty ||  loginForm.controls['email']?.touched)">
+              email valide est requis
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="form-label-group">
+            <input formControlName="password" type="password" id="inputPassword" class="form-control"
+              [ngClass]="{'is-invalid': loginForm.controls['password']?.errors?.required && ( loginForm.controls['password']?.dirty || loginForm.controls['password']?.touched)}"
+              placeholder="Password" required="required">
+            <label for="inputPassword">Password</label>
+            <div class="invalid-feedback"
+              *ngIf="loginForm.controls['password']?.errors?.required && ( loginForm.controls['password']?.dirty ||  loginForm.controls['password']?.touched)">
+              Mot de passe valide est requis
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" value="remember-me">
+              Remember Password
+            </label>
+          </div>
+        </div>
+        <button class="btn btn-primary btn-block" [disabled]="!loginForm.valid" (click)="loginBtn()">Login</button>
+        <div class="alert alert-danger" role="alert" *ngIf="message">
+          {{message}}
+        </div>
+      </form>
+      <!-- <div class="text-center">
+        <a class="d-block small" href="forgot-password.html">Forgot Password?</a>
+      </div> -->
+    </div>
+  </div>
+</div>

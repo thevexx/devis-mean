@@ -1,0 +1,128 @@
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+      <a routerLink="/dashboard">Dashboard</a>
+    </li>
+    <li class="breadcrumb-item active">Mon Compte</li>
+
+  </ol>
+  <h4>Mon Compte</h4>
+  <hr>
+
+  <div class="row">
+    <div class="col-lg-6">
+      <form [formGroup]="userForm">
+        <div class="container">
+          <div class="card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="firstName">Nom</label>
+                  <input type="text" formControlName="name" class="form-control" id="firstName"
+                    [ngClass]="{'is-invalid': userForm.controls['name']?.errors?.required && ( userForm.controls['name']?.dirty ||  userForm.controls['name']?.touched)}">
+                  <div class="invalid-feedback"
+                    *ngIf="userForm.controls['name']?.errors?.required && ( userForm.controls['name']?.dirty ||  userForm.controls['name']?.touched)">
+                    Nom valide est requis
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="lastName">Prénom</label>
+                  <input type="text" formControlName="lastname" class="form-control" id="lastName"
+                    [ngClass]="{'is-invalid': userForm.controls['lastname']?.errors?.required && ( userForm.controls['lastname']?.dirty ||  userForm.controls['lastname']?.touched)}">
+                    <div class="invalid-feedback"
+                    *ngIf="userForm.controls['lastname']?.errors?.required && ( userForm.controls['lastname']?.dirty ||  userForm.controls['lastname']?.touched)">
+                    prénom valide est requis
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="Email">Email</label>
+                  <input type="text" formControlName="email" class="form-control" id="Email"
+                  [ngClass]="{'is-invalid': userForm.controls['email']?.errors?.required && ( userForm.controls['email']?.dirty ||  userForm.controls['email']?.touched)}">
+                  <div class="invalid-feedback"
+                  *ngIf="userForm.controls['email']?.errors?.required && ( userForm.controls['email']?.dirty ||  userForm.controls['email']?.touched)">
+                  email valide est requis
+                </div>
+                </div>
+
+              </div>
+
+              <div class="row text-center">
+                <div class="col-md-12 mb-3">
+                  <button class="btn btn-primary" (click)="updateUserBtn()">Mettre a jour</button>
+                </div>
+              </div>
+            </div>
+            <div class="row text-center">
+                <div class="col-md-12 mb-3">
+                  <div class="alert alert-primary" role="alert" *ngIf="messageUser">
+                    {{messageUser}}
+                  </div>
+                </div>
+              </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="col-lg-6">
+      <form [formGroup]="passwordForm">
+
+        <div class="container">
+          <div class="card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-12 mb-3">
+                  <label for="firstName">Mot de passe actuelle</label>
+                  <input type="password" formControlName="old" class="form-control"
+                    [ngClass]="{'is-invalid': passwordForm.controls['old']?.errors?.required && ( passwordForm.controls['old']?.dirty ||  passwordForm.controls['old']?.touched)}"
+                    id="old">
+                  <div class="invalid-feedback"
+                    *ngIf="passwordForm.controls['old']?.errors?.required && ( passwordForm.controls['old']?.dirty ||  passwordForm.controls['old']?.touched)">
+                    Mot de passe valide est requis
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12 mb-3">
+                  <label for="lastName">Nouvelle mot de passe</label>
+                  <input type="password" formControlName="new" class="form-control" id="new"
+                    [ngClass]="{'is-invalid': passwordForm.controls['new']?.errors?.required && ( passwordForm.controls['new']?.dirty ||  passwordForm.controls['new']?.touched)}">
+                  <div class="invalid-feedback"
+                    *ngIf="passwordForm.controls['new']?.errors?.required && ( passwordForm.controls['new']?.dirty ||  passwordForm.controls['new']?.touched)">
+                    Mot de passe valide est requis
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12 mb-3">
+                  <label for="lastName">Repeter mot de passe</label>
+                  <input type="password" formControlName="repeat" class="form-control" id="repeat"
+                    [ngClass]="{'is-invalid':messagePasswordRepeat || passwordForm.controls['repeat']?.errors?.required && ( passwordForm.controls['repeat']?.dirty ||  passwordForm.controls['repeat']?.touched)}">
+                  <div class="invalid-feedback"
+                    *ngIf="passwordForm.controls['repeat']?.errors?.required && ( passwordForm.controls['repeat']?.dirty || passwordForm.controls['repeat']?.touched)">
+                    Mot de passe valide est requis
+                  </div>
+                  <div class="invalid-feedback"
+                  *ngIf="messagePasswordRepeat">
+                  {{messagePasswordRepeat}}
+                </div>
+                </div>
+              </div>
+              <div class="row text-center">
+                <div class="col-md-12 mb-3">
+                  <button class="btn btn-primary" (click)="updatePasswordBtn()">Mettre a jour</button>
+                </div>
+              </div>
+              <div class="row text-center">
+                <div class="col-md-12 mb-3">
+                  <div class="alert alert-primary" role="alert" *ngIf="messagePassword">
+                    {{messagePassword}}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>

@@ -1,0 +1,253 @@
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">
+    <a routerLink="/dashboard">Dashboard</a>
+  </li>
+  <li class="breadcrumb-item active">Devis</li>
+</ol>
+<h4>Devis</h4>
+<hr>
+<table class="table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nom et prénom client</th>
+      <th>Société</th>
+      <th>Statut de Confirmation</th>
+      <th>Statut de devis</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let devis of devisList">
+      <th scope="row">{{devis._id}}</th>
+      <td>{{devis.client.name}} {{devis.client.lastname}}</td>
+      <td>{{devis.client.company}}</td>
+      <td>{{devis.isConfirmed === null ? 'En cours' : devis.isConfirmed === true ? 'Confirmé' : 'Non confirmé'}}
+      </td>
+      <td>{{!devis.isAffected === null ? '-' : devis.isConfirmed === true ? 'Affecté' : 'En attente'}}</td>
+      <td><button type="button" class="btn btn-primary"
+          (click)="openModal(devisDetails); selectedDevis = devis">Consulter</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<ng-template #devisDetails let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Devis Details</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" *ngIf="devisDetailScreen === 1">
+    <div class="container">
+
+      <div class="row mx-auto ">
+        <div class="col-md-12 text-center">
+          <h4>Devis ID: {{selectedDevis._id}}</h4>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <p>
+            <b>Nom et prenom : </b> {{selectedDevis.client.name}} {{selectedDevis.client.lastname}}
+          </p>
+          <p>
+            <b>Email : </b> {{selectedDevis.client.email}}
+          </p>
+          <p>
+            <b>Address : </b> {{selectedDevis.client.address}}
+          </p>
+          <p>
+            <b>Dete limite : </b> {{selectedDevis.dateLimit | date}}
+          </p>
+        </div>
+        <div class="col-md-6">
+          <p>
+            <b>Societe : </b> {{selectedDevis.client.company}}
+          </p>
+          <p>
+            <b>Tel : </b> {{selectedDevis.client.tel}}
+          </p>
+          <p>
+            <b>Type de Devis : </b> {{selectedDevis.type}}
+          </p>
+          <p>
+            <!-- <b>Type de Service</b> {{selectedDevis.serviceType}} -->
+          </p>
+        </div>
+      </div>
+      <div class="row mx-auto ">
+        <div class="col-md-12 text-center">
+          <table class="table table-striped" *ngIf="selectedDevis.services.length">
+            <thead>
+              <tr>
+                  <th scope="col">id</th>
+                  <th scope="col">nom</th>
+                  <th scope="col">quantité</th>
+                  <th scope="col">prix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let service of selectedDevis.services; let i = index">
+                <th scope="row">{{service._id}}</th>
+                <td>{{service.name}}</td>
+                <td>{{selectedDevis.quantities[i] }}</td>
+                <td>{{service.price}}</td>
+              </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                  <th></th>
+                  <th></th>
+                  <th>totale</th>
+                  <th>{{selectedDevis?.total}}</th>
+                </tr>
+              </tfoot>
+          </table>
+          <table class="table table-striped" *ngIf="selectedDevis.products.length">
+            <thead>
+              <tr>
+                  <th scope="col">id</th>
+                  <th scope="col">nom</th>
+                  <th scope="col">quantité</th>
+                  <th scope="col">prix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let product of selectedDevis.products ; let i = index">
+                <th scope="row">{{product._id}}</th>
+                <td>{{product.name}}</td>
+                <td>{{selectedDevis.quantities[i] }}</td>
+                <td>{{product.price}}</td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <th></th>
+                <th></th>
+                <th>totale</th>
+                <th>{{selectedDevis?.total}}</th>
+              </tr>
+            </tfoot>
+          </table>
+
+        </div>
+      </div>
+      <div class="row mx-auto ">
+        <div class="col-md-12 text-center">
+          <p>Description</p>
+          <textarea cols="50" rows="5" readonly="true">{{selectedDevis.description}}
+        </textarea>
+        </div>
+      </div>
+      <!-- <div class="row">
+        <div class="col-md-6">
+          <p>
+            <b>Statut de validation</b>
+            {{selectedDevis.isValidCompany === null ? 'En cours' : selectedDevis.isValidCompany === true ? 'Valide' : 'N\'existe pas'}}
+          </p>
+        </div>
+        <div class="col-md-6">
+          <p>
+            <b>Statut de devis</b>
+            {{!selectedDevis.isValidCompany ? '-' : selectedDevis.isConfirmed === true ? 'Valide' : 'En attente'}}
+          </p>
+        </div>
+      </div> -->
+      <div class="row">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>
+                étapes
+              </th>
+              <th>
+                Statut
+              </th>
+              <th>
+                Actions
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                1 : Confirmation client
+              </td>
+              <td>{{selectedDevis.isConfirmed === null ? 'En cours' : selectedDevis.isConfirmed === true ? 'Confirmé' : 'Non confirmé'}}</td>
+
+              <td>
+                <button (click)="sendConfirmationEmail()" [disabled]="selectedDevis.isConfirmed !== null">Envoyer un email de confirmation</button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                2 : Affectation et demarage de projet
+              </td>
+              <td>{{!selectedDevis.isAffected === null ? '-' : selectedDevis.isConfirmed === true ? 'Affecté' : 'En attente'}}</td>
+              <td>
+                <button [disabled]="selectedDevis.isConfirmed === null" [disabled]="selectedDevis.isAffected !== null" (click)="devisDetailScreen = 2">Affecter</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="modal-body" *ngIf="devisDetailScreen === 2">
+    <div class="container">
+
+      <div class="row mx-auto ">
+        <div class="col-md-12 text-center">
+          <h4>Devis ID: {{selectedDevis._id}}</h4>
+        </div>
+      </div>
+
+      <div class="row mx-auto ">
+        <div class="col-md-12 text-center">
+          <p>Affecter un devis</p>
+          <table class="table">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Nom et prenom employee</th>
+                <th>Nombre de projet affectés</th>
+
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let employee of employeesList">
+                <td><input type="checkbox" (click)="selectedEmployees.push(employee._id)"></td>
+                <th>{{employee.user.name}} {{employee.user.lastname}}</th>
+                <td>{{employee.projects.length}}</td>
+              </tr>
+            </tbody>
+          </table>
+          <button type="button" class="btn btn-outline-dark"
+      (click)=" devisDetailScreen = 1 ">Retourner</button>
+          <button type="button" class="btn btn-outline-dark"
+      (click)="modal.close('Save click'); devisUpdate()">Affecter</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <!-- <div class="modal-footer" *ngIf="devisDetailScreen === 1">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Annuler</button>
+    <button type="button" class="btn btn-outline-danger"
+      (click)="modal.close('Save click'); rejectDevis()">Rejeter</button>
+    <button type="button" class="btn btn-outline-primary" (click)="devisDetailScreen = 2">Affecter</button>
+  </div>
+  <div class="modal-footer" *ngIf="devisDetailScreen === 2">
+    <button type="button" class="btn btn-outline-dark" (click)="devisDetailScreen = 1">Retourner</button>
+    <button type="button" class="btn btn-outline-dark"
+      (click)="modal.close('Save click'); devisUpdate()">Valider</button>
+  </div> -->
+  <div class="modal-footer">
+      <button type="button" class="btn btn-outline-danger pull-left" (click)="modal.close('Save click'); archiveBtn(selectedDevis)">Archiver</button>
+
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Fermer</button>
+
+  </div>
+</ng-template>

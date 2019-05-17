@@ -1,0 +1,169 @@
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">
+    <a routerLink="/dashboard">Dashboard</a>
+  </li>
+  <li class="breadcrumb-item active">Services</li>
+</ol>
+<div class="row">
+  <div class="col-6">
+    <h4>Services</h4>
+  </div>
+  <div class="col-sm-12 col-md-6 text-right">
+    <button class="btn btn-primary" (click)="serviceForm.reset();openModal(serviceFormModal)" type="button">
+      Ajouter un Service</button>
+  </div>
+</div>
+<hr>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Nom produit</th>
+      <th scope="col">type</th>
+      <th scope="col">desc</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let service of servicesList">
+      <td>{{service._id}}</td>
+      <td>{{service.name}} </td>
+      <td>{{service.type}}</td>
+      <td>{{service.desc}}</td>
+      <td><button type="button" class="btn btn-primary"
+          (click)="openModal(serviceDetails); selectService(service)">Consulter</button> </td>
+    </tr>
+  </tbody>
+</table>
+
+<ng-template #serviceFormModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Ajouter un Service</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="container">
+      <form [formGroup]="serviceForm">
+        <div class="row">
+          <div class="col-md-12 mb-3">
+            <label for="firstName">Nom produit</label>
+            <input type="text" formControlName="name" class="form-control" id="firstName"
+              [ngClass]="{'is-invalid': serviceForm.controls['name']?.errors?.required && ( serviceForm.controls['name']?.dirty ||  serviceForm.controls['name']?.touched)}">
+            <div div class="invalid-feedback"
+              *ngIf="serviceForm.controls['name']?.errors?.required && ( serviceForm.controls['name']?.dirty ||  serviceForm.controls['name']?.touched)">
+              Nom valide est requis
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 mb-3">
+            <label for="type">Type</label>
+            <input type="text" formControlName="type" class="form-control" id="type"
+              [ngClass]="{'is-invalid': serviceForm.controls['type']?.errors?.required && ( serviceForm.controls['type']?.dirty ||  serviceForm.controls['type']?.touched)}">
+            <div div class="invalid-feedback"
+              *ngIf="serviceForm.controls['type']?.errors?.required && ( serviceForm.controls['type']?.dirty ||  serviceForm.controls['type']?.touched)">
+              Type valide est requis
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 mb-3">
+            <label for="price">Prix</label>
+            <input type="number" formControlName="price" class="form-control" id="price"
+              [ngClass]="{'is-invalid': (serviceForm.controls['price']?.errors?.required || serviceForm.controls['price']?.errors?.min) && ( serviceForm.controls['price']?.dirty ||  serviceForm.controls['price']?.touched)}">
+            <div div class="invalid-feedback"
+              *ngIf="(serviceForm.controls['price']?.errors?.required || serviceForm.controls['price']?.errors?.min) && ( serviceForm.controls['price']?.dirty ||  serviceForm.controls['price']?.touched)">
+              Prix valide est requis
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 mb-3">
+            <label for="desc">Description</label>
+            <input type="text" formControlName="desc" class="form-control" id="desc"
+              [ngClass]="{'is-invalid': serviceForm.controls['desc']?.errors?.required && ( serviceForm.controls['desc']?.dirty ||  serviceForm.controls['desc']?.touched)}">
+            <div div class="invalid-feedback"
+              *ngIf="serviceForm.controls['desc']?.errors?.required && ( serviceForm.controls['desc']?.dirty ||  serviceForm.controls['desc']?.touched)">
+              Description valide est requis
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Annuler</button>
+    <button type="button" class="btn btn-outline-dark"
+      (click)="modal.close('Save click') ; addService(serviceForm)">Ajouter</button>
+  </div>
+</ng-template>
+
+
+<ng-template #serviceDetails let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Service Details</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="container">
+
+      <form [formGroup]="serviceForm">
+        <div class="row">
+          <div class="col-md-12 mb-3">
+            <label for="firstName">Nom produit</label>
+            <input type="text" formControlName="name" class="form-control" id="firstName"
+              [ngClass]="{'is-invalid': serviceForm.controls['name']?.errors?.required && ( serviceForm.controls['name']?.dirty ||  serviceForm.controls['name']?.touched)}">
+            <div div class="invalid-feedback"
+              *ngIf="serviceForm.controls['name']?.errors?.required && ( serviceForm.controls['name']?.dirty ||  serviceForm.controls['name']?.touched)">
+              Nom valide est requis.
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 mb-3">
+            <label for="type">Type</label>
+            <input type="text" formControlName="type" class="form-control" id="type"
+              [ngClass]="{'is-invalid': serviceForm.controls['type']?.errors?.required && ( serviceForm.controls['type']?.dirty ||  serviceForm.controls['type']?.touched)}">
+            <div div class="invalid-feedback"
+              *ngIf="serviceForm.controls['type']?.errors?.required && ( serviceForm.controls['type']?.dirty ||  serviceForm.controls['type']?.touched)">
+              Type valide est requis.
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 mb-3">
+            <label for="price">Prix</label>
+            <input type="number" formControlName="price" class="form-control" id="price"
+              [ngClass]="{'is-invalid': (serviceForm.controls['price']?.errors?.required || serviceForm.controls['price']?.errors?.min) && ( serviceForm.controls['price']?.dirty ||  serviceForm.controls['price']?.touched)}">
+            <div div class="invalid-feedback"
+              *ngIf="(serviceForm.controls['price']?.errors?.required || serviceForm.controls['price']?.errors?.min) && ( serviceForm.controls['price']?.dirty ||  serviceForm.controls['price']?.touched)">
+              Prix valide est requis
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 mb-3">
+            <label for="desc">Description</label>
+            <input type="text" formControlName="desc" class="form-control" id="desc"
+              [ngClass]="{'is-invalid': serviceForm.controls['desc']?.errors?.required && ( serviceForm.controls['desc']?.dirty ||  serviceForm.controls['desc']?.touched)}">
+            <div div class="invalid-feedback"
+              *ngIf="serviceForm.controls['desc']?.errors?.required && ( serviceForm.controls['desc']?.dirty ||  serviceForm.controls['desc']?.touched)">
+              Description valide est requis.
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="modal-footer">
+
+    <button type="button" class="btn btn-outline-danger pull-left"
+      (click)="modal.close('Save click'); archiveBtn(serviceForm)">Archiver</button>
+    <button type="button" class="btn btn-outline-dark"
+      (click)="modal.close('Save click'); updateService(serviceForm)">Update</button>
+  </div>
+</ng-template>

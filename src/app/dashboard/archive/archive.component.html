@@ -1,0 +1,679 @@
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">
+    <a routerLink="/dashboard">Dashboard</a>
+  </li>
+  <li class="breadcrumb-item active">Archive</li>
+</ol>
+<h4>Archive</h4>
+<hr *ngIf="archives?.devis.length">
+<h5 *ngIf="archives?.devis.length">Devis</h5>
+<table class="table" *ngIf="archives?.devis.length">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let devis of archives?.devis">
+      <th>{{devis._id}}</th>
+      <td><button type="button" class="btn btn-primary"
+          (click)="openModal(devisDetails); selectedDevis = devis">Consulter</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<hr *ngIf="archives?.devis.length">
+<h5 *ngIf="archives?.client.length">Clients</h5>
+<table class="table" *ngIf="archives?.client.length">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let client of archives?.client">
+      <th>{{client._id}}</th>
+      <td><button type="button" class="btn btn-primary"
+          (click)="openModal(clientDetails); selectedClient = client">Consulter</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<hr *ngIf="archives?.devis.length">
+<h5 *ngIf="archives?.project.length">Projets</h5>
+<table class="table" *ngIf="archives?.project.length">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let project of archives?.project">
+      <th>{{project._id}}</th>
+      <td><button type="button" class="btn btn-primary"
+          (click)="openModal(projectDetails); selectedProject = project; selectProject(project)">Consulter</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<hr *ngIf="archives?.employee.length">
+<h5 *ngIf="archives?.employee.length">Employés</h5>
+<table class="table" *ngIf="archives?.employee.length">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let employee of archives?.employee">
+      <th>{{employee._id}}</th>
+      <td>
+        <button type="button" class="btn btn-primary"
+          (click)="openModal(employeeDetails); selectedEmployee = employee; selectEmployee(employee)">Consulter</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<hr *ngIf="archives?.devis.length">
+<h5 *ngIf="archives?.product.length">Produits</h5>
+<table class="table" *ngIf="archives?.product.length">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let product of archives?.product">
+      <th>{{product._id}}</th>
+      <td><button type="button" class="btn btn-primary"
+          (click)="openModal(productDetails); selectedProduct = product; selectProduct(product)">Consulter</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<hr *ngIf="archives?.devis.length">
+<h5 *ngIf="archives?.service.length">Services</h5>
+<table class="table " *ngIf="archives?.service.length">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let service of archives?.service">
+      <th>{{service._id}}</th>
+      <td><button type="button" class="btn btn-primary"
+          (click)="openModal(serviceDetails); selectedService = service; selectService(service)">Consulter</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<ng-template #devisDetails let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Devis Details</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="container">
+      <div class="row mx-auto ">
+        <div class="col-md-12 text-center">
+          <h4>Devis ID: {{selectedDevis._id}}</h4>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <p>
+            <b>Nom et prenom : </b> {{selectedDevis.client.name}} {{selectedDevis.client.lastname}}
+          </p>
+          <p>
+            <b>Email : </b> {{selectedDevis.client.email}}
+          </p>
+          <p>
+            <b>Address : </b> {{selectedDevis.client.address}}
+          </p>
+          <p>
+            <b>Dete limite : </b> {{selectedDevis.dateLimit | date}}
+          </p>
+        </div>
+        <div class="col-md-6">
+          <p>
+            <b>Societe : </b> {{selectedDevis.client.company}}
+          </p>
+          <p>
+            <b>Tel : </b> {{selectedDevis.client.tel}}
+          </p>
+          <p>
+            <b>Type de Devis : </b> {{selectedDevis.type}}
+          </p>
+        </div>
+      </div>
+      <div class="row mx-auto ">
+        <div class="col-md-12 text-center">
+          <table class="table table-striped" *ngIf="selectedDevis.services.length">
+            <thead>
+              <tr>
+                <th scope="col">id</th>
+                <th scope="col">nom</th>
+                <th scope="col">quantité</th>
+                <th scope="col">prix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let service of selectedDevis.services; let i = index">
+                <th scope="row">{{service._id}}</th>
+                <td>{{service.name}}</td>
+                <td>{{selectedDevis.quantities[i] }}</td>
+                <td>{{service.price}}</td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <th></th>
+                <th></th>
+                <th>totale</th>
+                <th>{{selectedDevis?.total}}</th>
+              </tr>
+            </tfoot>
+          </table>
+          <table class="table table-striped" *ngIf="selectedDevis.products.length">
+            <thead>
+              <tr>
+                <th scope="col">id</th>
+                <th scope="col">nom</th>
+                <th scope="col">quantité</th>
+                <th scope="col">prix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let product of selectedDevis.products ; let i = index">
+                <th scope="row">{{product._id}}</th>
+                <td>{{product.name}}</td>
+                <td>{{selectedDevis.quantities[i] }}</td>
+                <td>{{product.price}}</td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <th></th>
+                <th></th>
+                <th>totale</th>
+                <th>{{selectedDevis?.total}}</th>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+      <div class="row mx-auto ">
+        <div class="col-md-12 text-center">
+          <p>Description</p>
+          <textarea cols="50" rows="5" readonly="true">{{selectedDevis.description}}
+        </textarea>
+        </div>
+      </div>
+      <div class="row">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>
+                étapes
+              </th>
+              <th>
+                Statut
+              </th>
+              <th>
+                Actions
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                1 : Confirmation client
+              </td>
+              <td>
+                {{selectedDevis.isConfirmed === null ? 'En cours' : selectedDevis.isConfirmed === true ? 'Confirmé' : 'Non confirmé'}}
+              </td>
+
+              <td>
+                <button [disabled]="true">Envoyer un
+                  email de confirmation</button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                2 : Affectation et demarage de projet
+              </td>
+              <td>
+                {{!selectedDevis.isAffected === null ? '-' : selectedDevis.isConfirmed === true ? 'Affecté' : 'En attente'}}
+              </td>
+              <td>
+                <button [disabled]="true">Affecter</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-danger pull-left"
+      (click)="modal.close('Save click'); deleteBtn(selectedDevis)">Supprimer définitivement</button>
+  </div>
+</ng-template>
+
+<ng-template #clientDetails let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Client Details</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click');">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="container">
+
+      <div class="row mx-auto ">
+        <div class="col-md-12 text-center">
+          <h4>Client ID: {{selectedClient._id}}</h4>
+        </div>
+      </div>
+      <div class="row pt-5">
+        <div class="col-md-6">
+          <p>
+            <b>Nom et prenom</b> {{selectedClient.name}} {{selectedClient.lastname}}
+          </p>
+          <p>
+            <b>Email</b> {{selectedClient.email}}
+          </p>
+          <p>
+            <b>Address</b> {{selectedClient.address}}
+          </p>
+        </div>
+        <div class="col-md-6">
+          <p>
+            <b>Societe</b> {{selectedClient.company}}
+          </p>
+          <p>
+            <b>Tel</b> {{selectedClient.tel}}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-danger pull-left"
+      (click)="modal.close('Save click'); deleteBtn(selectedClient)">Supprimer définitivement</button>
+  </div>
+</ng-template>
+
+<ng-template #projectDetails let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Projet Details</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="container">
+      <form [formGroup]="projectForm">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="firstName">First name</label>
+            <input type="text" formControlName="name" class="form-control" id="firstName"
+              [ngClass]="{'is-invalid': projectForm.controls['name']?.errors?.required && ( projectForm.controls['name']?.dirty ||  projectForm.controls['name']?.touched)}">
+            <div class="invalid-feedback"
+              *ngIf="projectForm.controls['name']?.errors?.required && ( projectForm.controls['name']?.dirty ||  projectForm.controls['name']?.touched)">
+              Nom valide est requis
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="lastName">Last name</label>
+            <input type="text" formControlName="lastname" class="form-control" id="lastName"
+              [ngClass]="{'is-invalid': projectForm.controls['lastname']?.errors?.required && ( projectForm.controls['lastname']?.dirty ||  projectForm.controls['lastname']?.touched)}">
+            <div class="invalid-feedback"
+              *ngIf="projectForm.controls['lastname']?.errors?.required && ( projectForm.controls['lastname']?.dirty ||  projectForm.controls['lastname']?.touched)">
+              prénom valide est requis
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="Email">Email</label>
+            <input type="email" formControlName="email" class="form-control" id="Email"
+              [ngClass]="{'is-invalid': projectForm.controls['email']?.errors?.required && ( projectForm.controls['email']?.dirty ||  projectForm.controls['email']?.touched)}">
+            <div class="invalid-feedback"
+              *ngIf="projectForm.controls['email']?.errors?.required && ( projectForm.controls['email']?.dirty ||  projectForm.controls['email']?.touched)">
+              email valide est requis
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="lastName">Tel</label>
+            <input type="tel" formControlName="tel" class="form-control" id="tel"
+              [ngClass]="{'is-invalid': projectForm.controls['tel']?.errors?.required && ( projectForm.controls['tel']?.dirty ||  projectForm.controls['tel']?.touched)}">
+            <div class="invalid-feedback"
+              *ngIf="projectForm.controls['tel']?.errors?.required && ( projectForm.controls['tel']?.dirty ||  projectForm.controls['tel']?.touched)">
+              Tel valide est requis
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="company">Nom de la societe</label>
+            <input type="text" formControlName="company" class="form-control" id="company"
+              [ngClass]="{'is-invalid': projectForm.controls['company']?.errors?.required && ( projectForm.controls['company']?.dirty ||  projectForm.controls['company']?.touched)}">
+            <div class="invalid-feedback"
+              *ngIf="projectForm.controls['company']?.errors?.required && ( projectForm.controls['company']?.dirty ||  projectForm.controls['company']?.touched)">
+              Adresse valide est requis
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="address">adresse</label>
+            <input type="text" formControlName="address" class="form-control" id="address"
+              [ngClass]="{'is-invalid': projectForm.controls['address']?.errors?.required && ( projectForm.controls['address']?.dirty ||  projectForm.controls['address']?.touched)}">
+            <div class="invalid-feedback"
+              *ngIf="projectForm.controls['address']?.errors?.required && ( projectForm.controls['address']?.dirty ||  projectForm.controls['address']?.touched)">
+              Adresse valide est requis
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <table class="table table-striped" *ngIf="selectedProject.services.length">
+              <thead>
+                <tr>
+                  <th scope="col">id</th>
+                  <th scope="col">nom</th>
+                  <th scope="col">prix</th>
+                  <th scope="col">quantité</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let service of selectedProject.services; let i = index">
+                  <th scope="row">{{service._id}}</th>
+                  <td>{{service.name}}</td>
+                  <td>{{service.price}}</td>
+                  <td>{{selectedProject.quantities[i] }}</td>
+                </tr>
+              </tbody>
+            </table>
+            <table class="table table-striped" *ngIf="selectedProject.products.length">
+              <thead>
+                <tr>
+                  <th scope="col">id</th>
+                  <th scope="col">nom</th>
+                  <th scope="col">prix</th>
+                  <th scope="col">quantité</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let product of selectedProject.products ; let i = index">
+                  <th scope="row">{{product._id}}</th>
+                  <td>{{product.name}}</td>
+                  <td>{{product.price}}</td>
+                  <td>{{selectedProject.quantities[i] }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="exampleFormControlTextarea1">Description</label>
+              <textarea class="form-control" formControlName="description" id="exampleFormControlTextarea1" rows="3">
+                </textarea>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-danger pull-left"
+      (click)="modal.close('Save click'); deleteBtn(selectedProject)">Supprimer définitivement</button>
+  </div>
+</ng-template>
+
+<ng-template #employeeDetails let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Employé Details</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="container">
+      <form [formGroup]="employeeForm">
+        <div [formGroup]="employeeForm['controls'].user">
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="firstName">First name</label>
+              <input type="text" formControlName="name" class="form-control" id="firstName"
+                [ngClass]="{'is-invalid': employeeForm['controls'].user.controls['name']?.errors?.required && ( employeeForm['controls'].user.controls['name']?.dirty ||  employeeForm['controls'].user.controls['name']?.touched)}">
+              <div class="invalid-feedback"
+                *ngIf="employeeForm['controls'].user.controls['name']?.errors?.required && ( employeeForm['controls'].user.controls['name']?.dirty ||  employeeForm['controls'].user.controls['name']?.touched)">
+                Nom valide est requis.
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="lastName">Last name</label>
+              <input type="text" formControlName="lastname" class="form-control" id="lastName"
+                [ngClass]="{'is-invalid': employeeForm['controls'].user.controls['lastname']?.errors?.required && ( employeeForm['controls'].user.controls['lastname']?.dirty ||  employeeForm['controls'].user.controls['lastname']?.touched)}">
+              <div class="invalid-feedback"
+                *ngIf="employeeForm['controls'].user.controls['lastname']?.errors?.required && ( employeeForm['controls'].user.controls['lastname']?.dirty ||  employeeForm['controls'].user.controls['lastname']?.touched)">
+                Prénom valide est requis.
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="Email">Email</label>
+              <input type="email" formControlName="email" class="form-control" id="Email"
+                [ngClass]="{'is-invalid': employeeForm['controls'].user.controls['email']?.errors?.required && ( employeeForm['controls'].user.controls['email']?.dirty ||  employeeForm['controls'].user.controls['email']?.touched)}">
+              <div class="invalid-feedback"
+                *ngIf="employeeForm['controls'].user.controls['email']?.errors?.required && ( employeeForm['controls'].user.controls['email']?.dirty ||  employeeForm['controls'].user.controls['email']?.touched)">
+                Email valide est requis.
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="password">Mot de passe</label>
+              <input type="text" formControlName="password" class="form-control" id="password"
+                [ngClass]="{'is-invalid': employeeForm['controls'].user.controls['password']?.errors?.required && ( employeeForm['controls'].user.controls['password']?.dirty ||  employeeForm['controls'].user.controls['password']?.touched)}">
+              <div class="invalid-feedback"
+                *ngIf="employeeForm['controls'].user.controls['password']?.errors?.required && ( employeeForm['controls'].user.controls['password']?.dirty ||  employeeForm['controls'].user.controls['password']?.touched)">
+                Mot de passe valide est requis.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="address">adresse</label>
+            <input type="text" formControlName="address" class="form-control" id="address"
+              [ngClass]="{'is-invalid': employeeForm.controls['address']?.errors?.required && ( employeeForm.controls['address']?.dirty ||  employeeForm.controls['address']?.touched)}">
+            <div class="invalid-feedback"
+              *ngIf="employeeForm.controls['address']?.errors?.required && ( employeeForm.controls['address']?.dirty ||  employeeForm.controls['address']?.touched)">
+              Email est requis.
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="lastName">Tel</label>
+            <input type="tel" formControlName="tel" class="form-control" id="tel"
+              [ngClass]="{'is-invalid': employeeForm.controls['tel']?.errors?.required && ( employeeForm.controls['tel']?.dirty ||  employeeForm.controls['tel']?.touched)}">
+            <div class="invalid-feedback"
+              *ngIf="employeeForm.controls['tel']?.errors?.required && ( employeeForm.controls['tel']?.dirty ||  employeeForm.controls['tel']?.touched)">
+              Tel valide est requis.
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="Competances">Compétances</label>
+            <input type="text" formControlName="skills" class="form-control" id="Competances"
+              [ngClass]="{'is-invalid': employeeForm.controls['skills']?.errors?.required && ( employeeForm.controls['skills']?.dirty ||  employeeForm.controls['skills']?.touched)}">
+            <div class="invalid-feedback"
+              *ngIf="employeeForm.controls['skills']?.errors?.required && ( employeeForm.controls['skills']?.dirty ||  employeeForm.controls['skills']?.touched)">
+              Valid Competances is required.
+            </div>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <div class="form-group">
+              <label for="statut">Statut</label>
+              <select formControlName="status" class="form-control" id="statut"
+                [ngClass]="{'is-invalid': employeeForm.controls['status']?.errors?.required && ( employeeForm.controls['status']?.dirty ||  employeeForm.controls['status']?.touched)}">
+                <option>Active</option>
+                <option>En congé</option>
+                <option>Démissionné</option>
+              </select>
+            </div>
+            <div class="invalid-feedback"
+              *ngIf="employeeForm.controls['status']?.errors?.required && ( employeeForm.controls['status']?.dirty ||  employeeForm.controls['status']?.touched)">
+              Valid statut is required.
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-danger pull-left"
+      (click)="modal.close('Save click'); deleteBtn(selectedEmployee)">Supprimer définitivement</button>
+  </div>
+</ng-template>
+
+<ng-template #productDetails let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Produit Details</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="container">
+
+      <form [formGroup]="productForm">
+        <div class="row">
+          <div class="col-md-12 mb-3">
+            <label for="firstName">Nom produit</label>
+            <input type="text" formControlName="name" class="form-control" id="firstName"
+              [ngClass]="{'is-invalid': productForm.controls['name']?.errors?.required && ( productForm.controls['name']?.dirty ||  productForm.controls['name']?.touched)}">
+            <div div class="invalid-feedback"
+              *ngIf="productForm.controls['name']?.errors?.required && ( productForm.controls['name']?.dirty ||  productForm.controls['name']?.touched)">
+              Nom valide est requis.
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 mb-3">
+            <label for="type">Type</label>
+            <input type="text" formControlName="type" class="form-control" id="type"
+              [ngClass]="{'is-invalid': productForm.controls['type']?.errors?.required && ( productForm.controls['type']?.dirty ||  productForm.controls['type']?.touched)}">
+            <div div class="invalid-feedback"
+              *ngIf="productForm.controls['type']?.errors?.required && ( productForm.controls['type']?.dirty ||  productForm.controls['type']?.touched)">
+              Type valide est requis.
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 mb-3">
+            <label for="price">Prix</label>
+            <input type="number" formControlName="price" class="form-control" id="price"
+              [ngClass]="{'is-invalid': productForm.controls['price']?.errors?.required && ( productForm.controls['price']?.dirty ||  productForm.controls['price']?.touched)}">
+            <div div class="invalid-feedback"
+              *ngIf="productForm.controls['price']?.errors?.required && ( productForm.controls['price']?.dirty ||  productForm.controls['price']?.touched)">
+              Valid Prix is required.
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 mb-3">
+            <label for="desc">Description</label>
+            <input type="text" formControlName="desc" class="form-control" id="desc"
+              [ngClass]="{'is-invalid': productForm.controls['desc']?.errors?.required && ( productForm.controls['desc']?.dirty ||  productForm.controls['desc']?.touched)}">
+            <div div class="invalid-feedback"
+              *ngIf="productForm.controls['desc']?.errors?.required && ( productForm.controls['desc']?.dirty ||  productForm.controls['desc']?.touched)">
+              Description valide est requis.
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-danger pull-left"
+      (click)="modal.close('Save click'); deleteBtn(selectedProduct)">Supprimer définitivement</button>
+  </div>
+</ng-template>
+
+<ng-template #serviceDetails let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Service Details</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="container">
+      <form [formGroup]="serviceForm">
+        <div class="row">
+          <div class="col-md-12 mb-3">
+            <label for="firstName">Nom produit</label>
+            <input type="text" formControlName="name" class="form-control" id="firstName"
+              [ngClass]="{'is-invalid': serviceForm.controls['name']?.errors?.required && ( serviceForm.controls['name']?.dirty ||  serviceForm.controls['name']?.touched)}">
+            <div div class="invalid-feedback"
+              *ngIf="serviceForm.controls['name']?.errors?.required && ( serviceForm.controls['name']?.dirty ||  serviceForm.controls['name']?.touched)">
+              Nom valide est requis.
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 mb-3">
+            <label for="type">Type</label>
+            <input type="text" formControlName="type" class="form-control" id="type"
+              [ngClass]="{'is-invalid': serviceForm.controls['type']?.errors?.required && ( serviceForm.controls['type']?.dirty ||  serviceForm.controls['type']?.touched)}">
+            <div div class="invalid-feedback"
+              *ngIf="serviceForm.controls['type']?.errors?.required && ( serviceForm.controls['type']?.dirty ||  serviceForm.controls['type']?.touched)">
+              Type valide est requis.
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 mb-3">
+            <label for="price">Prix</label>
+            <input type="number" formControlName="price" class="form-control" id="price"
+              [ngClass]="{'is-invalid': serviceForm.controls['price']?.errors?.required && ( serviceForm.controls['price']?.dirty ||  serviceForm.controls['price']?.touched)}">
+            <div div class="invalid-feedback"
+              *ngIf="serviceForm.controls['price']?.errors?.required && ( serviceForm.controls['price']?.dirty ||  serviceForm.controls['price']?.touched)">
+              Valid Prix is required.
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 mb-3">
+            <label for="desc">Description</label>
+            <input type="text" formControlName="desc" class="form-control" id="desc"
+              [ngClass]="{'is-invalid': serviceForm.controls['desc']?.errors?.required && ( serviceForm.controls['desc']?.dirty ||  serviceForm.controls['desc']?.touched)}">
+            <div div class="invalid-feedback"
+              *ngIf="serviceForm.controls['desc']?.errors?.required && ( serviceForm.controls['desc']?.dirty ||  serviceForm.controls['desc']?.touched)">
+              Description valide est requis.
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-danger pull-left"
+      (click)="modal.close('Save click'); deleteBtn(selectedService)">Supprimer définitivement</button>
+  </div>
+</ng-template>

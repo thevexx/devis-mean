@@ -1,0 +1,127 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <!-- START PANEL -->
+      <div class="card">
+        <div class="card-body" style="font-family: ubuntu">
+          <h2 class="card-title">Confirmer votre devis</h2>
+
+
+
+          <div class="row mx-auto ">
+            <div class="col-md-12 text-center">
+              <h4>Devis ID: {{selectedDevis?._id}}</h4>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <p>
+                <b>Nom et prenom : </b> {{selectedDevis?.client.name}} {{selectedDevis?.client.lastname}}
+              </p>
+              <p>
+                <b>Email : </b> {{selectedDevis?.client.email}}
+              </p>
+              <p>
+                <b>Address : </b> {{selectedDevis?.client.address}}
+              </p>
+              <p>
+                <b>Dete limite : </b> {{selectedDevis?.dateLimit | date}}
+              </p>
+            </div>
+            <div class="col-md-6">
+              <p>
+                <b>Societe : </b> {{selectedDevis?.client.company}}
+              </p>
+              <p>
+                <b>Tel : </b> {{selectedDevis?.client.tel}}
+              </p>
+              <p>
+                <b>Type de Devis : </b> {{selectedDevis?.type}}
+              </p>
+              <p>
+                <!-- <b>Type de Service</b> {{selectedDevis?.serviceType}} -->
+              </p>
+            </div>
+          </div>
+          <div class="row mx-auto ">
+            <div class="col-md-12 text-center">
+              <table class="table table-striped" *ngIf="selectedDevis?.services?.length">
+                <thead>
+                  <tr>
+                    <th scope="col">id</th>
+                    <th scope="col">nom</th>
+                    <th scope="col">quantité</th>
+                    <th scope="col">prix</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let service of selectedDevis?.services; let i = index">
+                    <th scope="row">{{service._id}}</th>
+                    <td>{{service.name}}</td>
+                    <td>{{selectedDevis?.quantities[i] }}</td>
+                    <td>{{service.price}}</td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                      <th></th>
+                      <th></th>
+                      <th>totale</th>
+                      <th>{{selectedDevis?.total}}</th>
+                    </tr>
+                  </tfoot>
+              </table>
+              <table class="table table-striped" *ngIf="selectedDevis?.products?.length">
+                <thead>
+                  <tr>
+                      <th scope="col">id</th>
+                    <th scope="col">nom</th>
+                    <th scope="col">quantité</th>
+                    <th scope="col">prix</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let product of selectedDevis?.products ; let i = index">
+                    <th scope="row">{{product._id}}</th>
+                    <td>{{product.name}}</td>
+                    <td>{{selectedDevis?.quantities[i] }}</td>
+                    <td>{{product.price}}</td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                      <th></th>
+                      <th></th>
+                      <th>totale</th>
+                      <th>{{selectedDevis?.total}}</th>
+                    </tr>
+                  </tfoot>
+              </table>
+
+            </div>
+          </div>
+          <div class="row mx-auto ">
+            <div class="col-md-12 text-center">
+              <p>Description</p>
+              <textarea cols="50" rows="5" readonly="true">{{selectedDevis?.description}}
+              </textarea>
+            </div>
+          </div>
+
+
+        </div>
+        <div class="card-footer">
+          <div class="row text-center align-content-center">
+            <div class="col-12">
+              <button class="btn btn-primary m-2" (click)="actionBtnDevis(true)">Confirmer</button>
+              <button class="btn btn-danger m-2" (click)="actionBtnDevis(false)">Refuser</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="alert alert-primary" role="alert" *ngIf="message">
+    {{message}}
+  </div>
+</div>

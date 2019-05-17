@@ -1,0 +1,104 @@
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">
+    <a routerLink="/dashboard">Dashboard</a>
+  </li>
+  <li class="breadcrumb-item active">Clients</li>
+</ol>
+<h4>Clients</h4>
+<hr>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Nom et prénom client</th>
+      <th scope="col">Société</th>
+      <th scope="col">Nombre de devis</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let client of clientList">
+      <th>{{client._id}}</th>
+      <td>{{client.name}} {{client.lastname}}</td>
+      <td>{{client.company}}</td>
+      <td>{{client.devis.length}}</td>
+      <td><button type="button" class="btn btn-primary"
+          (click)="openModal(clientDetails); selectedClient = client">Consulter</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<ng-template #clientDetails let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Client Details</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click');">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="container">
+
+      <div class="row mx-auto ">
+        <div class="col-md-12 text-center">
+          <h4>Client ID: {{selectedClient._id}}</h4>
+        </div>
+      </div>
+      <div class="row pt-5">
+        <div class="col-md-6">
+          <p>
+            <b>Nom et prenom</b> {{selectedClient.name}} {{selectedClient.lastname}}
+          </p>
+          <p>
+            <b>Email</b> {{selectedClient.email}}
+          </p>
+          <p>
+            <b>Address</b> {{selectedClient.address}}
+          </p>
+        </div>
+        <div class="col-md-6">
+          <p>
+            <b>Societe</b> {{selectedClient.company}}
+          </p>
+          <p>
+            <b>Tel</b> {{selectedClient.tel}}
+          </p>
+        </div>
+      </div>
+      <div class="row mx-auto ">
+        <div class="col-md-12 text-center">
+          <p>demandes / projets</p>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>statut de confirmation</th>
+                <th>statut de devis</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let devis of selectedClient.devis">
+                <th scope="row">{{devis._id}}</th>
+                <td>
+                    {{devis.isConfirmed === null ? 'En cours' : devis.isConfirmed === true ? 'Confirmé' : 'Non confirmé'}}</td>
+
+                <td>
+                    {{!devis.isAffected === null ? '-' : devis.isConfirmed === true ? 'Affecté' : 'En attente'}}
+                </td>
+                <td><button type="button" class="btn btn-primary" (click)="modal.close()"
+                    routerLink="/dashboard/devis">Consulter</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="modal-footer">
+      <button type="button" class="btn btn-outline-danger pull-left" (click)="modal.close('Save click'); archiveBtn(selectedClient)">Archiver</button>
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Fermer</button>
+  </div>
+</ng-template>

@@ -1,0 +1,166 @@
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">
+    <a routerLink="/dashboard">Dashboard</a>
+  </li>
+  <li class="breadcrumb-item active">Produits</li>
+</ol>
+<div class="row">
+  <div class="col-6">
+    <h4>Produits</h4>
+  </div>
+  <div class="col-sm-12 col-md-6 text-right">
+    <button class="btn btn-primary" (click)="productForm.reset();openModal(productFormModal)" type="button">
+      Ajouter un Produit</button>
+  </div>
+</div>
+<hr>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Nom produit</th>
+      <th scope="col">type</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let product of productsList">
+      <td>{{product._id}}</td>
+      <td>{{product.name}} </td>
+      <td>{{product.type}}</td>
+      <td><button type="button" class="btn btn-primary"
+          (click)="openModal(productDetails); selectProduct(product)">Consulter</button> </td>
+    </tr>
+  </tbody>
+</table>
+
+<ng-template #productFormModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Ajouter un Produit</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="container">
+      <form [formGroup]="productForm">
+        <div class="row">
+          <div class="col-md-12 mb-3">
+            <label for="firstName">Nom produit</label>
+            <input type="text" formControlName="name" class="form-control" id="firstName"
+              [ngClass]="{'is-invalid': productForm.controls['name']?.errors?.required && ( productForm.controls['name']?.dirty ||  productForm.controls['name']?.touched)}">
+            <div div class="invalid-feedback"
+              *ngIf="productForm.controls['name']?.errors?.required && ( productForm.controls['name']?.dirty ||  productForm.controls['name']?.touched)">
+              Nom valide est requis
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 mb-3">
+            <label for="type">Type</label>
+            <input type="text" formControlName="type" class="form-control" id="type"
+              [ngClass]="{'is-invalid': productForm.controls['type']?.errors?.required && ( productForm.controls['type']?.dirty ||  productForm.controls['type']?.touched)}">
+            <div div class="invalid-feedback"
+              *ngIf="productForm.controls['type']?.errors?.required && ( productForm.controls['type']?.dirty ||  productForm.controls['type']?.touched)">
+              Type valide est requis
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 mb-3">
+            <label for="price">Prix</label>
+            <input type="number" formControlName="price" class="form-control" id="price"
+              [ngClass]="{'is-invalid': (productForm.controls['price']?.errors?.required || productForm.controls['price']?.errors?.min) && ( productForm.controls['price']?.dirty ||  productForm.controls['price']?.touched)}">
+            <div div class="invalid-feedback"
+              *ngIf="(productForm.controls['price']?.errors?.required || productForm.controls['price']?.errors?.min) && ( productForm.controls['price']?.dirty ||  productForm.controls['price']?.touched)">
+              Prix valide est requis
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 mb-3">
+            <label for="desc">Description</label>
+            <input type="text" formControlName="desc" class="form-control" id="desc"
+              [ngClass]="{'is-invalid': productForm.controls['desc']?.errors?.required && ( productForm.controls['desc']?.dirty ||  productForm.controls['desc']?.touched)}">
+            <div div class="invalid-feedback"
+              *ngIf="productForm.controls['desc']?.errors?.required && ( productForm.controls['desc']?.dirty ||  productForm.controls['desc']?.touched)">
+              Description valide est requis
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Annuler</button>
+    <button type="button" class="btn btn-outline-dark"
+      (click)="modal.close('Save click') ; addProduct(productForm)">Ajouter</button>
+  </div>
+</ng-template>
+
+
+<ng-template #productDetails let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Produit Details</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="container">
+
+      <form [formGroup]="productForm">
+        <div class="row">
+          <div class="col-md-12 mb-3">
+            <label for="firstName">Nom produit</label>
+            <input type="text" formControlName="name" class="form-control" id="firstName"
+              [ngClass]="{'is-invalid': productForm.controls['name']?.errors?.required && ( productForm.controls['name']?.dirty ||  productForm.controls['name']?.touched)}">
+            <div div class="invalid-feedback"
+              *ngIf="productForm.controls['name']?.errors?.required && ( productForm.controls['name']?.dirty ||  productForm.controls['name']?.touched)">
+              Nom valide est requis
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 mb-3">
+            <label for="type">Type</label>
+            <input type="text" formControlName="type" class="form-control" id="type"
+              [ngClass]="{'is-invalid': productForm.controls['type']?.errors?.required && ( productForm.controls['type']?.dirty ||  productForm.controls['type']?.touched)}">
+            <div div class="invalid-feedback"
+              *ngIf="productForm.controls['type']?.errors?.required && ( productForm.controls['type']?.dirty ||  productForm.controls['type']?.touched)">
+              Type valide est requis
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 mb-3">
+            <label for="price">Prix</label>
+            <input type="number" formControlName="price" class="form-control" id="price"
+              [ngClass]="{'is-invalid': (productForm.controls['price']?.errors?.required || productForm.controls['price']?.errors?.min) && ( productForm.controls['price']?.dirty ||  productForm.controls['price']?.touched)}">
+            <div div class="invalid-feedback"
+              *ngIf="(productForm.controls['price']?.errors?.required || productForm.controls['price']?.errors?.min) && ( productForm.controls['price']?.dirty ||  productForm.controls['price']?.touched)">
+              Prix valide est requis
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 mb-3">
+            <label for="desc">Description</label>
+            <input type="text" formControlName="desc" class="form-control" id="desc"
+              [ngClass]="{'is-invalid': productForm.controls['desc']?.errors?.required && ( productForm.controls['desc']?.dirty ||  productForm.controls['desc']?.touched)}">
+            <div div class="invalid-feedback"
+              *ngIf="productForm.controls['desc']?.errors?.required && ( productForm.controls['desc']?.dirty ||  productForm.controls['desc']?.touched)">
+              Description valide est requis
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-danger pull-left"
+      (click)="modal.close('Save click'); archiveBtn(productForm)">Archiver</button>
+    <button type="button" class="btn btn-outline-dark"
+      (click)="modal.close('Save click'); updateProduct(productForm)">Mettre a jour</button>
+  </div>
+</ng-template>

@@ -1,0 +1,43 @@
+@import '../../assets/css/landing-page.min.css';
+/* @import '../../assets/css/login.css'; */
+
+.btn-circle {
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  /* padding: 6px 0; */
+  /* font-size: 12px; */
+  line-height: 1.428571429;
+  border-radius: 15px;
+  border-width: 0px;
+  color: #f8f9fa;
+  background-color: #007bff;
+}
+
+.btn-circle.btn-lg {
+  width: 50px;
+  height: 50px;
+  padding: 10px 16px;
+  font-size: 18px;
+  line-height: 1.33;
+  border-radius: 25px;
+}
+
+.btn-circle.btn-xl {
+  width: 70px;
+  height: 70px;
+  padding: 10px 16px;
+  font-size: 24px;
+  line-height: 1.33;
+  border-radius: 35px;
+}
+
+
+.bg-demande{
+  background-color: rgb(0, 0, 0);
+  background: no-repeat url('../../assets/img/bg1.jpeg');
+  height: 100vh;
+  width: 100vw;
+  position: absolute;
+  opacity: 0.8;
+}

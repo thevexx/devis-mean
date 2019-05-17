@@ -1,0 +1,198 @@
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">
+    <a routerLink="/dashboard">Dashboard</a>
+  </li>
+  <li class="breadcrumb-item active">Projets</li>
+</ol>
+<h4>Projets</h4>
+<hr>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Société</th>
+      <th scope="col">Date limite</th>
+      <th scope="col">Employé affecté</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let project of projectList">
+      <th>{{project._id}}</th>
+      <td>{{project.client.company}}</td>
+      <td>{{project.dateLimit | date}}</td>
+      <td>{{project.employees.length}}</td>
+      <td><button type="button" class="btn btn-primary"
+          (click)="open(projectDetails); selectProject(project)">Consulter</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+<ng-template #projectDetails let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Projet Details</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+
+    <div class="container">
+      <form [formGroup]="projectForm">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="firstName">Nom</label>
+            <input type="text" formControlName="name" class="form-control" id="firstName"
+              [ngClass]="{'is-invalid': projectForm.controls['name']?.errors?.required && ( projectForm.controls['name']?.dirty ||  projectForm.controls['name']?.touched)}">
+            <div class="invalid-feedback"
+              *ngIf="projectForm.controls['name']?.errors?.required && ( projectForm.controls['name']?.dirty ||  projectForm.controls['name']?.touched)">
+              Nom valide est requis
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="lastName">Prénom</label>
+            <input type="text" formControlName="lastname" class="form-control" id="lastName"
+              [ngClass]="{'is-invalid': projectForm.controls['lastname']?.errors?.required && ( projectForm.controls['lastname']?.dirty ||  projectForm.controls['lastname']?.touched)}">
+            <div class="invalid-feedback"
+              *ngIf="projectForm.controls['lastname']?.errors?.required && ( projectForm.controls['lastname']?.dirty ||  projectForm.controls['lastname']?.touched)">
+              Prénom valide est requis
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="Email">Email</label>
+            <input type="email" formControlName="email" class="form-control" id="Email"
+              [ngClass]="{'is-invalid': projectForm.controls['email']?.errors?.required && ( projectForm.controls['email']?.dirty ||  projectForm.controls['email']?.touched)}">
+            <div class="invalid-feedback"
+              *ngIf="projectForm.controls['email']?.errors?.required && ( projectForm.controls['email']?.dirty ||  projectForm.controls['email']?.touched)">
+              Email valide est requis
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="lastName">Tel</label>
+            <input type="tel" formControlName="tel" class="form-control" id="tel"
+              [ngClass]="{'is-invalid': projectForm.controls['tel']?.errors?.required && ( projectForm.controls['tel']?.dirty ||  projectForm.controls['tel']?.touched)}">
+            <div class="invalid-feedback"
+              *ngIf="projectForm.controls['tel']?.errors?.required && ( projectForm.controls['tel']?.dirty ||  projectForm.controls['tel']?.touched)">
+              Tel valide est requis
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="company">Nom de la societe</label>
+            <input type="text" formControlName="company" class="form-control" id="company"
+              [ngClass]="{'is-invalid': projectForm.controls['company']?.errors?.required && ( projectForm.controls['company']?.dirty ||  projectForm.controls['company']?.touched)}">
+            <div class="invalid-feedback"
+              *ngIf="projectForm.controls['company']?.errors?.required && ( projectForm.controls['company']?.dirty ||  projectForm.controls['company']?.touched)">
+              Nom de la societe valide est requis
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="address">Adresse</label>
+            <input type="text" formControlName="address" class="form-control" id="address"
+              [ngClass]="{'is-invalid': projectForm.controls['address']?.errors?.required && ( projectForm.controls['address']?.dirty ||  projectForm.controls['address']?.touched)}">
+            <div class="invalid-feedback"
+              *ngIf="projectForm.controls['address']?.errors?.required && ( projectForm.controls['address']?.dirty ||  projectForm.controls['address']?.touched)">
+              Adresse valide est requis
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <table class="table table-striped" *ngIf="selectedProject.services.length">
+              <thead>
+                <tr>
+                  <th scope="col">id</th>
+                  <th scope="col">nom</th>
+                  <th scope="col">prix</th>
+                  <th scope="col">quantité</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let service of selectedProject.services; let i = index">
+                  <th scope="row">{{service._id}}</th>
+                  <td>{{service.name}}</td>
+                  <td>{{service.price}}</td>
+                  <td>{{selectedProject.quantities[i] }}</td>
+                </tr>
+              </tbody>
+            </table>
+            <table class="table table-striped" *ngIf="selectedProject.products.length">
+              <thead>
+                <tr>
+                  <th scope="col">id</th>
+                  <th scope="col">nom</th>
+                  <th scope="col">prix</th>
+                  <th scope="col">quantité</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let product of selectedProject.products ; let i = index">
+                  <th scope="row">{{product._id}}</th>
+                  <td>{{product.name}}</td>
+                  <td>{{product.price}}</td>
+                  <td>{{selectedProject.quantities[i] }}</td>
+                </tr>
+              </tbody>
+            </table>
+
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="exampleFormControlTextarea1">Description</label>
+              <textarea class="form-control" formControlName="description" id="exampleFormControlTextarea1" rows="3">
+              </textarea>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="exampleFormControlTextarea1">Employé affecté </label>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <td>Nom et prenom employee</td>
+                    <td>Nombre de projet affectés</td>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let employee of employeesList">
+                    <td><input type="checkbox" [checked]="isAffected(employee)"
+                        (click)="triggerAffectedEmployee(employee)">
+                    </td>
+                    <td>{{employee.user.name}} {{employee.user.lastname}}</td>
+                    <td>{{employee?.projects?.length}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="exampleFormControlTextarea1">Statut</label>
+              <select formControlName="status" class="form-control" id="statut">
+                <option value="in progress">En cours</option>
+                <option value="finished">Fini</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-danger pull-left"
+      (click)="modal.close('Save click'); archiveBtn(projectForm)">Archiver</button>
+
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click'); update(projectForm);">Mettre
+      a jour</button>
+  </div>
+</ng-template>

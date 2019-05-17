@@ -1,0 +1,263 @@
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">
+    <a routerLink="/dashboard">Dashboard</a>
+  </li>
+  <li class="breadcrumb-item active">Employés</li>
+</ol>
+<div class="row">
+  <div class="col-6">
+    <h4>Employés</h4>
+  </div>
+  <div class="col-sm-12 col-md-6 text-right">
+    <button class="btn btn-primary" (click)="employeeForm.reset();openModal(employeeFormModal)" type="button">
+      Ajouter un Employé</button>
+  </div>
+</div>
+<hr>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Nom et prénom</th>
+      <th scope="col">Compétances</th>
+      <th scope="col">Nombre de projets affectés</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let employee of employeesList">
+      <td>{{employee._id}}</td>
+      <td>{{employee?.user?.name}} {{employee?.user?.lastname}}</td>
+      <td>{{employee.skills}}</td>
+      <td>{{employee?.projects?.length}}</td>
+      <td><button type="button" class="btn btn-primary"
+          (click)="openModal(employeeDetails); selectEmployee(employee)">Consulter</button> </td>
+    </tr>
+  </tbody>
+</table>
+
+<ng-template #employeeFormModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Ajouter un Employé</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="container">
+      <form [formGroup]="employeeForm">
+        <div [formGroup]="employeeForm['controls'].user">
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="firstName">Nom</label>
+              <input type="text" formControlName="name" class="form-control" id="firstName"
+                [ngClass]="{'is-invalid': employeeForm['controls'].user.controls['name']?.errors?.required && ( employeeForm['controls'].user.controls['name']?.dirty ||  employeeForm['controls'].user.controls['name']?.touched)}">
+              <div class="invalid-feedback"
+                *ngIf="employeeForm['controls'].user.controls['name']?.errors?.required && ( employeeForm['controls'].user.controls['name']?.dirty ||  employeeForm['controls'].user.controls['name']?.touched)">
+                Nom valide est requis
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="lastName">Prénom</label>
+              <input type="text" formControlName="lastname" class="form-control" id="lastName"
+                [ngClass]="{'is-invalid': employeeForm['controls'].user.controls['lastname']?.errors?.required && ( employeeForm['controls'].user.controls['lastname']?.dirty ||  employeeForm['controls'].user.controls['lastname']?.touched)}">
+              <div class="invalid-feedback"
+                *ngIf="employeeForm['controls'].user.controls['lastname']?.errors?.required && ( employeeForm['controls'].user.controls['lastname']?.dirty ||  employeeForm['controls'].user.controls['lastname']?.touched)">
+                Prénom valide est requis
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="Email">Email</label>
+              <input type="email" formControlName="email" class="form-control" id="Email"
+                [ngClass]="{'is-invalid': employeeForm['controls'].user.controls['email']?.errors?.required && ( employeeForm['controls'].user.controls['email']?.dirty ||  employeeForm['controls'].user.controls['email']?.touched)}">
+              <div class="invalid-feedback"
+                *ngIf="employeeForm['controls'].user.controls['email']?.errors?.required && ( employeeForm['controls'].user.controls['email']?.dirty ||  employeeForm['controls'].user.controls['email']?.touched)">
+                Email valide est requis
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="password">Mot de passe</label>
+              <input type="text" formControlName="password" class="form-control" id="password"
+                [ngClass]="{'is-invalid': employeeForm['controls'].user.controls['password']?.errors?.required && ( employeeForm['controls'].user.controls['password']?.dirty ||  employeeForm['controls'].user.controls['password']?.touched)}">
+              <div class="invalid-feedback"
+                *ngIf="employeeForm['controls'].user.controls['password']?.errors?.required && ( employeeForm['controls'].user.controls['password']?.dirty ||  employeeForm['controls'].user.controls['password']?.touched)">
+                Mot de passe valide est requis
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="address">adresse</label>
+            <input type="text" formControlName="address" class="form-control" id="address"
+              [ngClass]="{'is-invalid': employeeForm.controls['address']?.errors?.required && ( employeeForm.controls['address']?.dirty ||  employeeForm.controls['address']?.touched)}">
+            <div class="invalid-feedback"
+              *ngIf="employeeForm.controls['address']?.errors?.required && ( employeeForm.controls['address']?.dirty ||  employeeForm.controls['address']?.touched)">
+              Adresse valide est requis
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="lastName">Tel</label>
+            <input type="tel" formControlName="tel" class="form-control" id="tel"
+              [ngClass]="{'is-invalid': employeeForm.controls['tel'].errors?.min || employeeForm.controls['tel'].errors?.max || employeeForm.controls['tel'].errors?.pattern && ( employeeForm.controls['tel']?.dirty ||  employeeForm.controls['tel']?.touched)}">
+            <div
+              *ngIf="employeeForm.controls['tel'].errors?.min || employeeForm.controls['tel'].errors?.max || employeeForm.controls['tel'].errors?.pattern"
+              class="invalid-feedback">
+              tel valide est requis
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="Competances">Compétances</label>
+            <input type="text" formControlName="skills" class="form-control" id="Competances"
+              [ngClass]="{'is-invalid': employeeForm.controls['skills']?.errors?.required && ( employeeForm.controls['skills']?.dirty ||  employeeForm.controls['skills']?.touched)}">
+            <div class="invalid-feedback"
+              *ngIf="employeeForm.controls['skills']?.errors?.required && ( employeeForm.controls['skills']?.dirty ||  employeeForm.controls['skills']?.touched)">
+              Compétances valide est requis
+            </div>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <div class="form-group">
+              <label for="statut">Statut</label>
+              <select formControlName="status" class="form-control" id="statut"
+                [ngClass]="{'is-invalid': employeeForm.controls['status']?.errors?.required && ( employeeForm.controls['status']?.dirty ||  employeeForm.controls['status']?.touched)}">
+                <option>Active</option>
+                <option>En congé</option>
+                <option>Démissionné</option>
+              </select>
+            </div>
+            <div class="invalid-feedback"
+              *ngIf="employeeForm.controls['status']?.errors?.required && ( employeeForm.controls['status']?.dirty ||  employeeForm.controls['status']?.touched)">
+              Statut valide est requis
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Annuler</button>
+    <button type="button" class="btn btn-outline-dark"
+      (click)="modal.close('Save click') ; addEmployee(employeeForm)">Ajouter</button>
+  </div>
+</ng-template>
+
+
+<ng-template #employeeDetails let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Employé Details</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="container">
+      <form [formGroup]="employeeForm">
+        <div [formGroup]="employeeForm['controls'].user">
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="firstName">Nom</label>
+              <input type="text" formControlName="name" class="form-control" id="firstName"
+                [ngClass]="{'is-invalid': employeeForm['controls'].user.controls['name']?.errors?.required && ( employeeForm['controls'].user.controls['name']?.dirty ||  employeeForm['controls'].user.controls['name']?.touched)}">
+              <div class="invalid-feedback"
+                *ngIf="employeeForm['controls'].user.controls['name']?.errors?.required && ( employeeForm['controls'].user.controls['name']?.dirty ||  employeeForm['controls'].user.controls['name']?.touched)">
+                Nom valide est requis
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="lastName">Prénom</label>
+              <input type="text" formControlName="lastname" class="form-control" id="lastName"
+                [ngClass]="{'is-invalid': employeeForm['controls'].user.controls['lastname']?.errors?.required && ( employeeForm['controls'].user.controls['lastname']?.dirty ||  employeeForm['controls'].user.controls['lastname']?.touched)}">
+              <div class="invalid-feedback"
+                *ngIf="employeeForm['controls'].user.controls['lastname']?.errors?.required && ( employeeForm['controls'].user.controls['lastname']?.dirty ||  employeeForm['controls'].user.controls['lastname']?.touched)">
+                Prénom valide est requis
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="Email">Email</label>
+              <input type="email" formControlName="email" class="form-control" id="Email"
+                [ngClass]="{'is-invalid': employeeForm['controls'].user.controls['email']?.errors?.required && ( employeeForm['controls'].user.controls['email']?.dirty ||  employeeForm['controls'].user.controls['email']?.touched)}">
+              <div class="invalid-feedback"
+                *ngIf="employeeForm['controls'].user.controls['email']?.errors?.required && ( employeeForm['controls'].user.controls['email']?.dirty ||  employeeForm['controls'].user.controls['email']?.touched)">
+                Email valide est requis
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="password">Mot de passe</label>
+              <input type="text" formControlName="password" class="form-control" id="password"
+                [ngClass]="{'is-invalid': employeeForm['controls'].user.controls['password']?.errors?.required && ( employeeForm['controls'].user.controls['password']?.dirty ||  employeeForm['controls'].user.controls['password']?.touched)}">
+              <div class="invalid-feedback"
+                *ngIf="employeeForm['controls'].user.controls['password']?.errors?.required && ( employeeForm['controls'].user.controls['password']?.dirty ||  employeeForm['controls'].user.controls['password']?.touched)">
+                Mot de passe valide est requis
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="address">adresse</label>
+            <input type="text" formControlName="address" class="form-control" id="address"
+              [ngClass]="{'is-invalid': employeeForm.controls['address']?.errors?.required && ( employeeForm.controls['address']?.dirty ||  employeeForm.controls['address']?.touched)}">
+            <div class="invalid-feedback"
+              *ngIf="employeeForm.controls['address']?.errors?.required && ( employeeForm.controls['address']?.dirty ||  employeeForm.controls['address']?.touched)">
+              Adresse valide est requis
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="lastName">Tel</label>
+            <input type="tel" formControlName="tel" class="form-control" id="tel"
+              [ngClass]="{'is-invalid': employeeForm.controls['tel'].errors?.min || employeeForm.controls['tel'].errors?.max || employeeForm.controls['tel'].errors?.pattern && ( employeeForm.controls['tel']?.dirty ||  employeeForm.controls['tel']?.touched)}">
+            <div
+              *ngIf="employeeForm.controls['tel'].errors?.min || employeeForm.controls['tel'].errors?.max || employeeForm.controls['tel'].errors?.pattern"
+              class="invalid-feedback">
+              tel valide est requis
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="Competances">Compétances</label>
+            <input type="text" formControlName="skills" class="form-control" id="Competances"
+              [ngClass]="{'is-invalid': employeeForm.controls['skills']?.errors?.required && ( employeeForm.controls['skills']?.dirty ||  employeeForm.controls['skills']?.touched)}">
+            <div class="invalid-feedback"
+              *ngIf="employeeForm.controls['skills']?.errors?.required && ( employeeForm.controls['skills']?.dirty ||  employeeForm.controls['skills']?.touched)">
+              Compétances valide est requis
+            </div>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <div class="form-group">
+              <label for="statut">Statut</label>
+              <select formControlName="status" class="form-control" id="statut"
+                [ngClass]="{'is-invalid': employeeForm.controls['status']?.errors?.required && ( employeeForm.controls['status']?.dirty ||  employeeForm.controls['status']?.touched)}">
+                <option>Active</option>
+                <option>En congé</option>
+                <option>Démissionné</option>
+              </select>
+            </div>
+            <div class="invalid-feedback"
+              *ngIf="employeeForm.controls['status']?.errors?.required && ( employeeForm.controls['status']?.dirty ||  employeeForm.controls['status']?.touched)">
+              Statut valide est requis
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-danger pull-left"
+      (click)="modal.close('Save click'); archiveBtn(employeeForm)">Archiver</button>
+    <button type="button" class="btn btn-outline-dark"
+      (click)="modal.close('Save click'); updateEmployee(employeeForm)">Mettre a jour </button>
+  </div>
+</ng-template>

@@ -1,0 +1,249 @@
+<div class="bg-demande" alt="">
+</div>
+<nav class="navbar navbar-light bg-light static-top">
+  <div class="container">
+    <a class="navbar-brand" routerLink="/home">Devis</a>
+    <div>
+      <a class="btn btn-primary ml-3" routerLink="/demande">Demande de Devis</a>
+      <a class="btn btn-secondary ml-3" routerLink="/login">Se connecter</a>
+    </div>
+  </div>
+</nav>
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-12 col-xl-12 mx-auto">
+      <div class="card card-signin flex-row my-5">
+        <div class="card-img-left d-none d-md-flex">
+          <!-- Background image for card set in CSS! -->
+        </div>
+        <div class="card-body">
+          <h5 class="card-title text-center">Demande de devis</h5>
+          <form class="form-signin" [formGroup]="devisForm">
+            <div class="row">
+              <div class="col-6">
+                <div class="form-label-group">
+                  <input type="text" id="inputFirstname" formControlName="name" class="form-control"
+                    placeholder="Firstname" required autofocus>
+                  <label for="inputFirstname">Nom</label>
+                  <div *ngIf="devisForm.controls['name'].errors?.required &&
+                    isSubmitted" class="alert alert-danger">
+                    Nom valide est requis
+                  </div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="form-label-group">
+                  <input type="text" id="inputLastname" formControlName="lastname" class="form-control"
+                    placeholder="Lastname" required autofocus>
+                  <label for="inputLastname">Prénom</label>
+                  <div *ngIf="devisForm.controls['lastname'].errors?.required &&
+                    isSubmitted" class="alert alert-danger">
+                    Prénom valide est requis
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-6">
+                <div class="form-label-group">
+                  <input type="text" id="inputEmail" formControlName="email" class="form-control" placeholder="Email"
+                    required autofocus>
+                  <label for="inputEmail">Email</label>
+                  <div *ngIf="(devisForm.controls['email'].errors?.required || devisForm.controls['email'].errors?.email) &&
+                    isSubmitted" class="alert alert-danger">
+                    Email valide est requis
+                  </div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="form-label-group">
+                  <input type="text" id="inputTel" formControlName="tel" class="form-control" placeholder="Tel" required
+                    autofocus>
+                  <label for="inputTel">Tel</label>
+                  <div *ngIf="devisForm.controls['tel'].errors?.required &&
+                    isSubmitted" class="alert alert-danger">
+                    tel est requis.
+                  </div>
+                  <div *ngIf="devisForm.controls['tel'].errors?.min || devisForm.controls['tel'].errors?.max || devisForm.controls['tel'].errors?.pattern &&
+                  isSubmitted" class="alert alert-danger">
+                    tel valide est requis
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr class="my-4">
+            <div class="row">
+              <div class="col-6">
+                <div class="form-label-group">
+                  <input type="text" id="inputCompany" formControlName="company" class="form-control"
+                    placeholder="Nom de la société" required autofocus>
+                  <label for="inputCompany">Nom de la société</label>
+                  <div *ngIf="devisForm.controls['company'].errors?.required &&
+                    isSubmitted" class="alert alert-danger">
+                    Nom de la société valide est requis
+                  </div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="form-label-group">
+                  <input type="text" id="inputAdresse" formControlName="address" class="form-control"
+                    placeholder="Adresse" required autofocus>
+                  <label for="inputAdresse">Adresse</label>
+                  <div *ngIf="devisForm.controls['tel'].errors?.required &&
+                    isSubmitted" class="alert alert-danger">
+                    Adresse valide est requis
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-6 mt-3">
+                <div class="">
+                  <div class="form-check">
+                    <input class="form-check-input" #serviceCheck checked="checked" type="radio" value="service"
+                      formControlName="type" id="defaultCheck1">
+                    <label class="form-check-label" for="defaultCheck1">
+                      Service
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-6 mt-3">
+                <div class="form-check">
+                  <input class="form-check-input" #productCheck type="radio" value="produit" formControlName="type"
+                    id="defaultCheck2">
+                  <label class="form-check-label" for="defaultCheck2">
+                    Produit
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="row mt-3" *ngIf="serviceCheck.checked">
+              <div class="col-12" *ngFor="let service of selectedServices; let i = index">
+                <div class="row">
+                  <div class="col-10">
+                    <div class="row">
+                      <div class="col-7">
+                        <label for="exampleFormControlSelect1"> {{service.name}}</label>
+                      </div>
+                      <div class="col-5">
+                        <input type="number" placeholder="Quantity" value="1" min="1" class="form-control">
+                      </div>
+                    </div>
+
+                  </div>
+                  <div class="col-2">
+                    <button class="btn-circle" (click)="removeSelectedService(i)"><i class="fas fa-times"></i></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row mt-3" *ngIf="serviceCheck.checked">
+              <div class="col-10">
+                <div class="form-group">
+                  <select class="form-control" #serviceSelect>
+                    <option value="" *ngFor="let service of servicesList">{{service.name}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-2 mt-1">
+                <button class="btn-circle" (click)="addSelectedService(serviceSelect)">
+                  <i class="fas fa-plus"></i>
+                </button>
+              </div>
+            </div>
+            <div class="row mt-3" *ngIf="productCheck.checked">
+              <div class="col-12" *ngFor="let product of selectedProducts; let i = index">
+                <div class="row">
+                  <div class="col-10">
+                    <div class="row">
+                      <div class="col-7">
+                        <label for="exampleFormControlSelect1"> {{product.name}}</label>
+                      </div>
+                      <div class="col-5">
+                        <input type="number" placeholder="Quantity" value="1" min="1" class="form-control"
+                          (change)="changedQuantity(i, $event.target.value)">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-2">
+                    <button class="btn-circle" (click)="removeSelectedProduct(i)"><i class="fas fa-times"></i></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row mt-3" *ngIf="productCheck.checked">
+              <div class="col-10">
+                <div class="form-group">
+                  <select class="form-control" #productSelect>
+                    <option value="" *ngFor="let product of productsList">{{product.name}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-2 mt-1">
+                <button class="btn-circle" (click)="addSelectedProduct(productSelect)"><i
+                    class="fas fa-plus"></i></button>
+              </div>
+            </div>
+            <div *ngIf="(devisForm.controls['type'].errors?.required || (!selectedServices.length && !selectedProducts.length)) &&
+            isSubmitted" class="alert alert-danger">
+              Sélectionnez un produit ou un service
+            </div>
+            <div class="form-label-group">
+              <textarea id="inputDescription" rows="4" formControlName="description" class="form-control"
+                placeholder="Description" required>
+                </textarea>
+              <div *ngIf="devisForm.controls['description'].errors?.required &&
+                    isSubmitted" class="alert alert-danger">
+                Description valide est requis
+              </div>
+              <!-- <label for="inputDescription">Description</label> -->
+            </div>
+
+            <div class="row">
+              <div class="col-6 mx-auto">
+                <div class="form-label-group">
+                  <input type="date" id="inputDescription" formControlName="dateLimit" class="form-control"
+                    placeholder="Date limite de la demande" required>
+                  <label for="inputDescription">Date limite de la demande</label>
+                  <div *ngIf="devisForm.controls['dateLimit'].errors?.required &&
+                    isSubmitted" class="alert alert-danger">
+                    Date limite valide est requis
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!--
+            <hr>
+
+            <div class="form-label-group">
+              <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+              <label for="inputPassword">Password</label>
+            </div>
+
+            <div class="form-label-group">
+              <input type="password" id="inputConfirmPassword" class="form-control" placeholder="Password" required>
+              <label for="inputConfirmPassword">Confirm password</label>
+            </div> -->
+
+            <button class="btn btn-lg btn-primary btn-block text-uppercase" type="button"
+              (click)="createDevisBtn(devisForm)">Envoyer la demande</button>
+
+            <!-- <a class="d-block text-center mt-2 small" href="#">Sign In</a> -->
+            <!--
+                <button class="btn btn-lg btn-google btn-block text-uppercase" type="submit"><i
+                  class="fab fa-google mr-2"></input> Sign up with Google</button>
+                  <button class="btn btn-lg btn-facebook btn-block text-uppercase" type="submit"><i
+                    class="fab fa-facebook-f mr-2"></i> Sign up with Facebook</button> -->
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="alert alert-primary" role="alert" *ngIf="message">
+    {{message}}
+  </div>
+</div>
